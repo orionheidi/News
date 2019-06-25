@@ -11,10 +11,11 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('home');
-// });
+Route::get('/', function () {
+    return view('articles.index');
+});
 
 Auth::routes();
 
-Route::resource('/','ArticleController');
+Route::get('/allArticles','ArticleController@index')->name('all-articles');
+Route::get('/userArticles','UserController@index')->name('articles-by-user');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
+use App\Photo;
 
 class ArticleController extends Controller
 {
@@ -14,7 +15,7 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $articles = Article::with('user')->paginate(10);
-        return view('articles.home',compact('articles'));
+        $articles = Article::with('user','photos')->paginate(10);
+        return view('articles.allArticles',compact('articles'));
     }
 }
