@@ -13,8 +13,9 @@
             @foreach($user->articles as $article)
             @if($article)
                 <p class="blog-post-meta"> {{ $article->created_at }}</p>
-                    Article Title: <h4 class="blog-post-title"> {{ $article->title }}</h4>
+                    Article Title: <h4 class="blog-post-title"><a href="{{ route('single-article',['id' => $article->id]) }}"> {{ $article->title }}</a></h4>
                     <img src="{{ $article->url }}" height="400" />
+                    <p></p>
             @endif
             @foreach($article->photos as $photo)
             @if($photo)
