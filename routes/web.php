@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/allArticles','ArticleController@index')->name('all-articles');
 Route::get('/userArticles','UserController@index')->name('articles-by-user');
 Route::get('/singleArticle/{id}','ArticleController@show')->name('single-article');
-Route::get('/create', 'ArticleController@create')->name('create');
-Route::post('/create', 'ArticleController@store')->name('store');
+Route::get('/create', 'ArticleController@create')->name('create')->middleware('auth');
+Route::post('/create', 'ArticleController@store')->name('store')->middleware('auth');
 
 
