@@ -14,6 +14,13 @@
             @if($article)
                 <p class="blog-post-meta"> {{ $article->created_at }}</p>
                     Article Title: <h4 class="blog-post-title"><a href="{{ route('single-article',['id' => $article->id]) }}"> {{ $article->title }}</a></h4>
+                    <form method="POST" action="{{route('destroy', ['id' => $article->id])}}">
+                            @csrf
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" id="deleteProduct" class="btn btn-danger">Delete Article</button>
+                    </form>
+                    <br>
                     <img src="{{ $article->url }}" height="400" />
                     <p></p>
             @endif

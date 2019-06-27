@@ -10,10 +10,16 @@
             @foreach($articles as $article)
                 <p></p>
                     <h4 class="blog-post-title"><a href="{{ route('single-article',['id' => $article->id]) }}"> {{ $article->title }}</a></h4>
-                        <p class="blog-post-meta"> {{ $article->created_at }}</p>
+                    <p class="blog-post-meta"> {{ $article->created_at }}</p>
             @if($article->user)
                 Created by: <h4 class="blog-post-title"> {{ $article->user->name }}</h4>
             @endif
+            <form method="POST" action="{{route('destroy', ['id' => $article->id])}}">
+                    @csrf
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit" id="deleteProduct" class="btn btn-danger">Delete Article</button>
+            </form>
                 <h6 class="border-bottom">{{ $article->description }}</h6>
                     <img src="{{ $article->url }}" height="400" />
                     <p></p>

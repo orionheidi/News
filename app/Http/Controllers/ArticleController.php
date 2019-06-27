@@ -63,4 +63,22 @@ class ArticleController extends Controller
         session()->flash('success_message', 'Article successfully created!');
         return back()->with('success_message', 'Article successfully created!');
     }
+
+    public function destroy($id)
+    {
+        
+        $article = Article::findOrFail($id);
+        $article->delete();
+        $article = Article::with('user')->paginate(10);
+
+        response()->json([
+            'success' => 'Record deleted successfully!'
+        ]);
+
+        
+        return view('articles.index',compact('articles'));
+
+        // session()->flash('success_message', 'Article successfully deleted!');
+        // return back()->with('success_message', 'Article successfully deleted!');
+    }
 }
