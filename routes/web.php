@@ -18,7 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/allArticles','ArticleController@index')->name('all-articles');
-Route::get('/userArticles','UserController@index')->name('articles-by-user');
+// Route::get('/autocomplete', 'UserController@index');
+// Route::post('/autocomplete/fetch', 'UserController@fetch')->name('autocomplete.fetch');
+Route::get('/search','UserController@index')->name('articles-by-user');
+// Route::get('/userArticles/{id}','UserController@show')->name('show-user-articles');
 Route::get('/singleArticle/{id}','ArticleController@show')->name('single-article');
 Route::get('/create', 'ArticleController@create')->name('create')->middleware('auth');
 Route::post('/create', 'ArticleController@store')->name('store')->middleware('auth');

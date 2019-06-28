@@ -46,8 +46,6 @@ class ArticleController extends Controller
             'title' => $request->get('title'),
             'description' => $request->get('description'),  
             'url' => $request->get('url'),  
-            // 'urlExra' => $request->get('urlExtra'), 
-            // 'photos' => explode(';', explode('/', $request->get('url'))[1])[0],    
             'user_id' => auth()->user()->id,
         ]);
 
@@ -57,6 +55,11 @@ class ArticleController extends Controller
         $photos[] = new Photo(['urlExtra' => $photo]);
         }
         $article->photos()->saveMany($photos);
+
+        // $file = $request->file('Photos');
+        // $destinationPath = 'public/img/';
+        // $originalFile = $file->getClientOriginalName();
+        // $file->move($destinationPath, $originalFile);
         // return $article;
         // return response()->json(['success' => true]);
         

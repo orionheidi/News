@@ -49,7 +49,7 @@
                     <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
                 </div>
         </div>
-            <div class="clone hide">
+            <div hidden class="clone hide">
                 <div class="control-group input-group" style="margin-top:10px">
                     <input type="file" name="photos[]" class="form-control">
                     <div class="input-group-btn"> 
