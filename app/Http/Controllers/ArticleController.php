@@ -10,10 +10,6 @@ use App\User;
 
 class ArticleController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function index()
     {
@@ -23,7 +19,6 @@ class ArticleController extends Controller
 
     public function show($id)
     {
-        // $user = auth()->user(); 
         $article = Article::with('user','photos')->findOrFail($id);
         return view('articles.singleArticle',compact('article'));
     }
@@ -50,17 +45,19 @@ class ArticleController extends Controller
         ]);
 
         // $photos =[];
-        // foreach ($request->get('photos') as  $photo) {
-        //     if ($request->hasFile('urlExtra')) {
-        //         $image = $request->file('urlExtra');
-        //         $name = time().'.'.$image->getClientOriginalExtension();
-        //         $destinationPath = public_path('/images');
-        //         $image->move($destinationPath, $name);
-        //     }
-        // $photos[] = new Photo(['urlExtra' => $photo]);
-       
+
+        // foreach ($request->get('image') as  $photo) {
+
+        // if ($request->hasFile('image')) {
+        //     $photo = $request->file('image');
+        //     $name = time().'.'.$image->getClientOriginalExtension();
+        //     $destinationPath = public_path('/images');
+        //     $photo->move($destinationPath, $name);
+            
         // }
-        // $article->photos()->saveMany($photos);
+        //     $photos[] = new Photo(['urlExtra' => $photo,'article_id' => $article->id]);
+        //     $article->photos()->saveMany($photos);
+        // } 
 
         if ($request->hasFile('url')) {
             $image = $request->file('url');
@@ -76,12 +73,15 @@ class ArticleController extends Controller
         return back()->with('success_message', 'Article successfully created!');
     }
 
+
+
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
         $article->delete();
         return redirect('allArticles')->with('success', 'Article successfully deleted!');
     }
+
 
     public function edit($id)
     {
@@ -90,7 +90,8 @@ class ArticleController extends Controller
     }
 
     public function update(Request $request, $id)
-{
+    {
+
     $this->validate($request,
     [
         'title' => 'min:2|max:255',
@@ -118,11 +119,9 @@ class ArticleController extends Controller
         $requestData['urlExtra'] = "/media/{$fileNameToStore}";
     }
 
-
-  
     $article->update($requestData);
     session()->flash('success_message', 'Article successfully updated!');
     return back()->with('success_message', 'Article successfully updated!');
-    // return redirect('/');
-}
+
+    }
 }

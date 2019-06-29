@@ -20,9 +20,6 @@ class UserController extends Controller
         if(count($user) > 0)
             return view('articles.userArticles')->withDetails($user)->withQuery ( $q );
         else return view ('articles.index')->withMessage('No Details found. Try to search again !');
-        // response()->json([
-        //     'false' => 'User doesnt exists!'
-        // ]);
     }
 
    

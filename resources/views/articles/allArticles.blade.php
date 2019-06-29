@@ -24,11 +24,13 @@
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">Delete Article</button>
             </form>
+            <br>
             <form method="PUT" action="{{route('edit', ['id' => $article->id])}}">
                     @csrf
                     {{-- @csrf --}}
                     <button type="submit" id="editArticle" class="btn btn-success">Edit Article</button>
             </form>
+            <br>
                 <h6 class="border-bottom">{{ $article->description }}</h6>
                     <img src="{{ $article->url }}"  height="400" />
                     <p></p>
