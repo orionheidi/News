@@ -38,51 +38,49 @@ class ArticleController extends Controller
         $this->validate($request,
         [
             'title' => 'required|min:2|max:255',
-            'description' => 'required|string|max:1000', 
-            'urlExtra' => 'required', 
-            'urlExtra.*' => ['regex:/^(http)?s?:?(\/\/[^\‘]*\.(?:png|jpg|jpeg))/'],
-            'photos' => 'required|array|min:1',
+            'description' => 'required|string|max:1000',
+            'photos' => 'array' 
         ]);
+
         $article = Article::create([
             'title' => $request->get('title'),
-            'description' => $request->get('description'),  
-            'urlExtra' => $request->get('urlExtra'),  
+            'description' => $request->get('description'), 
+            'url' => $request->get('url'),   
             'user_id' => auth()->user()->id,
         ]);
 
-        // $request->get('urlExtra')->move(public_path('urlExtra'),'urlExtra');
-        $photos =[];
-        foreach ($request->get('photos') as  $photo) {
-        $photos[] = new Photo(['urlExtra' => $photo]);
-        }
-        $article->photos()->saveMany($photos);
+        // $photos =[];
+        // foreach ($request->get('photos') as  $photo) {
+        //     if ($request->hasFile('urlExtra')) {
+        //         $image = $request->file('urlExtra');
+        //         $name = time().'.'.$image->getClientOriginalExtension();
+        //         $destinationPath = public_path('/images');
+        //         $image->move($destinationPath, $name);
+        //     }
+        // $photos[] = new Photo(['urlExtra' => $photo]);
+       
+        // }
+        // $article->photos()->saveMany($photos);
 
-        // $file = $request->file('Photos');
-        // $destinationPath = 'public/img/';
-        // $originalFile = $file->getClientOriginalName();
-        // $file->move($destinationPath, $originalFile);
-        // return $article;
-        // return response()->json(['success' => true]);
-        
+        if ($request->hasFile('url')) {
+            $image = $request->file('url');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $name);
+            $this->save();
+    
+            return back()->with('success','Image Upload successfully');
+        }
+
         session()->flash('success_message', 'Article successfully created!');
         return back()->with('success_message', 'Article successfully created!');
     }
 
     public function destroy($id)
     {
-        
         $article = Article::findOrFail($id);
         $article->delete();
-        $article = Article::with('user')->paginate(10);
-
-        response()->json([
-            'success' => 'Record deleted successfully!'
-        ]);
-   
-        return view('articles.index',compact('articles'));
-
-        // session()->flash('success_message', 'Article successfully deleted!');
-        // return back()->with('success_message', 'Article successfully deleted!');
+        return redirect('allArticles')->with('success', 'Article successfully deleted!');
     }
 
     public function edit($id)

@@ -22,6 +22,6 @@ Route::get('/search','UserController@index')->name('articles-by-user');
 Route::get('/singleArticle/{id}','ArticleController@show')->name('single-article');
 Route::get('/create', 'ArticleController@create')->name('create')->middleware('auth');
 Route::post('/create', 'ArticleController@store')->name('store')->middleware('auth');
-Route::delete('article/{id}', 'ArticleController@destroy')->name('destroy')->middleware('auth');
+Route::delete('/remove/{id}', 'ArticleController@destroy')->name('destroy')->middleware('auth');
 Route::get('/edit/{id}', 'ArticleController@edit')->name('edit')->middleware('auth');
 Route::put('/update-article/{id}','ArticleController@update')->name('update-article')->middleware('auth');

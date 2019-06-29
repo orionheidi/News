@@ -42,6 +42,11 @@
                         @csrf
                             <button type="submit" id="deleteProduct" class="btn btn-danger">Delete Article</button>
                         </form>
+                        <form method="PUT" action="{{route('edit', ['id' => $article->id])}}">
+                                @csrf
+                                {{-- @csrf --}}
+                                <button type="submit" id="editArticle" class="btn btn-success">Edit Article</button>
+                        </form>
                         <br>
                             <strong>Article description: </strong> 
                             <p class="blog-post-meta"> {{ $article->description }}</p>

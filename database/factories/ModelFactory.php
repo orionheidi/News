@@ -29,7 +29,7 @@ $factory->define(User::class, function (Faker $faker) {
 $factory->define(App\Article::class, function(Faker $faker){       
     return[
         "title" => $faker->realText(50),
-        "description" => $faker->paragraph,
+        "description" => $faker->realText(1000),
         "url" =>  $faker->imageUrl($width = 640, $height = 480),
     ];
  });

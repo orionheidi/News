@@ -13,8 +13,12 @@
                 <form method="POST" action="{{route('destroy', ['id' => $article->id])}}">
                         @csrf
                         @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete Article</button>
+                </form>
+                <form method="PUT" action="{{route('edit', ['id' => $article->id])}}">
                         @csrf
-                        <button type="submit" id="deleteProduct" class="btn btn-danger">Delete Article</button>
+                        {{-- @csrf --}}
+                        <button type="submit" id="editArticle" class="btn btn-success">Edit Article</button>
                 </form>
                 <br>
                     <img src="{{ $article->url }}" height="400" />

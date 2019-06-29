@@ -72,10 +72,11 @@
     (function() {
         document.querySelector('#createForm').addEventListener('submit', function (e) {
             e.preventDefault()
-            axios.post(this.action, {
+                axios.post(this.action, {
                 'title': document.querySelector('#title').value,
                 'description': document.querySelector('#description').value,
                 'url': document.querySelector('#url').value,
+                'photos[]': document.querySelector('#photos[]').value,
             })
             .then((response) => {
                 // window.location.href = '{{ route('create') }}'
