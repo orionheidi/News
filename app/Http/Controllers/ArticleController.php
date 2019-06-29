@@ -7,6 +7,7 @@ use App\Article;
 use App\Photo;
 use App\User;
 
+
 class ArticleController extends Controller
 {
     // public function __construct()
@@ -38,18 +39,18 @@ class ArticleController extends Controller
         [
             'title' => 'required|min:2|max:255',
             'description' => 'required|string|max:1000', 
-            'url' => 'required', 
-            'url.*' => ['regex:/^(http)?s?:?(\/\/[^\‘]*\.(?:png|jpg|jpeg))/'],
+            'urlExtra' => 'required', 
+            'urlExtra.*' => ['regex:/^(http)?s?:?(\/\/[^\‘]*\.(?:png|jpg|jpeg))/'],
             'photos' => 'required|array|min:1',
         ]);
         $article = Article::create([
             'title' => $request->get('title'),
             'description' => $request->get('description'),  
-            'url' => $request->get('url'),  
+            'urlExtra' => $request->get('urlExtra'),  
             'user_id' => auth()->user()->id,
         ]);
 
-        // $request->get('url')->move(public_path('url'),'url');
+        // $request->get('urlExtra')->move(public_path('urlExtra'),'urlExtra');
         $photos =[];
         foreach ($request->get('photos') as  $photo) {
         $photos[] = new Photo(['urlExtra' => $photo]);
@@ -77,11 +78,53 @@ class ArticleController extends Controller
         response()->json([
             'success' => 'Record deleted successfully!'
         ]);
-
-        
+   
         return view('articles.index',compact('articles'));
 
         // session()->flash('success_message', 'Article successfully deleted!');
         // return back()->with('success_message', 'Article successfully deleted!');
     }
+
+    public function edit($id)
+    {
+        $article = Article::with('user','photos')->findOrFail($id);
+        return view('articles.edit',compact('article'));
+    }
+
+    public function update(Request $request, $id)
+{
+    $this->validate($request,
+    [
+        'title' => 'min:2|max:255',
+        'description' => 'string|max:1000', 
+        // 'urlExtra' => 'required', 
+        // 'urlExtra.*' => ['regex:/^(http)?s?:?(\/\/[^\‘]*\.(?:png|jpg|jpeg))/'],
+        // 'photos' => 'required|array|min:1',
+        // 'photos.*' => ['regex:/^(http)?s?:?(\/\/[^\‘]*\.(?:png|jpg|jpeg))/']
+    ]);
+
+    $requestData = $request->all();
+    $article = Article::findOrFail($id);
+
+    if ($request->hasFile('urlExtra')) {
+        $file = $request->file('urlExtra');
+        $fileNameExt = $request->file('urlExtra')->getClientOriginalName();
+        $fileNameForm = str_replace(' ', '_', $fileNameExt);
+        $fileName = pathinfo($fileNameForm, PATHINFO_FILENAME);
+        $fileExt = $request->file('urlExtra')->getClientOriginalExtension();
+        $fileNameToStore = $fileName.'_'.time().'.'.$fileExt;
+        $pathToStore = public_path('media');
+        Photo::make($file)->resize(600, 531)->save($pathToStore . DIRECTORY_SEPARATOR. $fileNameToStore);
+
+        // UPDATE TEMPORARY IMAGE PATH WITH ACTUAL PATH
+        $requestData['urlExtra'] = "/media/{$fileNameToStore}";
+    }
+
+
+  
+    $article->update($requestData);
+    session()->flash('success_message', 'Article successfully updated!');
+    return back()->with('success_message', 'Article successfully updated!');
+    // return redirect('/');
+}
 }

@@ -17,11 +17,16 @@
             <form method="POST" action="{{route('destroy', ['id' => $article->id])}}">
                     @csrf
                     @method('DELETE')
-                    @csrf
+                    {{-- @csrf --}}
                     <button type="submit" id="deleteProduct" class="btn btn-danger">Delete Article</button>
             </form>
+            <form method="PUT" action="{{route('edit', ['id' => $article->id])}}">
+                    @csrf
+                    {{-- @csrf --}}
+                    <button type="submit" id="editArticle" class="btn btn-success">Edit Article</button>
+            </form>
                 <h6 class="border-bottom">{{ $article->description }}</h6>
-                    <img src="{{ $article->url }}" height="400" />
+                    <img src="{{ $article->url }}"  height="400" />
                     <p></p>
             @foreach($article->photos as $photo)
             @if($photo)
